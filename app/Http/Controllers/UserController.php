@@ -24,4 +24,10 @@ class UserController extends Controller
     public function edituser(){
         return view('user.edit-user');
     }
+
+    public function produk()
+    {
+        $nama = "Laptop";
+        return view('user.product', ['nama' => $nama]);
+    }
 }
