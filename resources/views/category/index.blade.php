@@ -4,6 +4,7 @@
 <main>
     <div class="container-fluid px-4">
         <h1 class="my-4">Category</h1>
+        <a href="{{route('category.create')}}" class="btn btn-primary mb-2">Create New</a>
         <div class="card mb-4">
             <div class="card-body">
                 <table id="datatablesSimple">
@@ -15,13 +16,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($data as $c)
+                        @foreach ($categories as $c)
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td>{{$c['name']}}</td>
                             <td>
-                                <a type="button" class="btn btn-warning" href="#">Edit</a>
-                                <a type="button" class="btn btn-danger" onclick="#">Hapus</a>
+                                <form action="{{route('category.destroy', $c->id)}}" method="POST" onsubmit="return confirm('Anda yakin menghapus ini?');">
+                                    <a type="button" class="btn btn-warning" href="{{route('category.edit', $c->id)}}">Edit</a>
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach

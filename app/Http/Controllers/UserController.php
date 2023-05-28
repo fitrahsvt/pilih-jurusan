@@ -2,32 +2,58 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     public function index()
     {
-        return view('user.index');
+        $users = User::with('role')->get();
+        return view('user.index', compact('users'));
     }
 
-    public function adduser()
+    public function create()
     {
-        return view('user.add-user');
+        $role = Role::all();
+        return view('user.create', compact('role'));
     }
 
-    public function detailuser()
+    public function store(Request $request)
     {
-        return view('user.detail-user');
+        $user = User::create([
+            'role_id' => $request->role,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+        ]);
+        return redirect()->route('user.index');
     }
 
-    public function edituser(){
-        return view('user.edit-user');
-    }
-
-    public function produk()
+    public function edit($id)
     {
-        $nama = "Laptop";
-        return view('user.product', ['nama' => $nama]);
+        $user = User::find($id);
+        $role = Role::all();
+        return view('user.edit', compact('user', 'role'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        User::where('id', $id)->update([
+            'role_id' => $request->role,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->password,
+        ]);
+        return redirect()->route('user.index');
+    }
+
+    public function destroy($id)
+    {
+        User::where('id', $id)->delete();
+        return redirect()->route('user.index');
     }
 }
