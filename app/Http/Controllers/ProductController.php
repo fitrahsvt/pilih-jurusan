@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -118,16 +119,34 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        //masukkan data ke database
-        $products = Product::create([
-            'category_id' => $request->category,
-            'name' => $request->name,
-            'price' => $request->price,
-            'sale_price' => $request->sale_price,
-            'brands' => $request->brand,
-            // 'rating' => $request->rating
-        ]);
+        if ($request->hasFile('image')) {
+             // ubah nama file gambar dengan angka random
+            $imageName = time().'.'.$request->image->extension();
 
+            // upload file gambar ke folder slider
+            Storage::putFileAs('public/product', $request->file('image'), $imageName);
+
+            //masukkan data ke database
+            $products = Product::create([
+                'category_id' => $request->category,
+                'name' => $request->name,
+                'price' => $request->price,
+                'sale_price' => $request->sale_price,
+                'brands' => $request->brand,
+                'image' => $imageName,
+                // 'rating' => $request->rating
+            ]);
+        }else{
+            //masukkan data ke database
+            $products = Product::create([
+                'category_id' => $request->category,
+                'name' => $request->name,
+                'price' => $request->price,
+                'sale_price' => $request->sale_price,
+                'brands' => $request->brand,
+                // 'rating' => $request->rating
+            ]);
+        }
         // redirect ke halaman category.index
         return redirect()->route('product.index');
     }
@@ -142,18 +161,45 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
-        Product::where('id', $id)->update([
-            'category_id' => $request->category,
-            'name' => $request->name,
-            'price' => $request->price,
-            'sale_price' => $request->sale_price,
-            'brands' => $request->brand,
-        ]);
+        if ($request->hasFile('image')) {
+            // ambil nama file gambar lama dari database
+            $gambar_lama = Product::find($id)->image;
+
+            //hapus file gambar lama
+            Storage::delete('public/product/'.$gambar_lama);
+
+            // ubah nama file gambar dengan angka random
+            $imageName = time().'.'.$request->image->extension();
+
+            // upload file gambar ke folder slider
+            Storage::putFileAs('public/product', $request->file('image'), $imageName);
+
+            //masukkan data ke database
+            Product::where('id', $id)->update([
+                'category_id' => $request->category,
+                'name' => $request->name,
+                'price' => $request->price,
+                'sale_price' => $request->sale_price,
+                'brands' => $request->brand,
+                'image' => $imageName,
+            ]);
+        }else{
+            Product::where('id', $id)->update([
+                'category_id' => $request->category,
+                'name' => $request->name,
+                'price' => $request->price,
+                'sale_price' => $request->sale_price,
+                'brands' => $request->brand,
+            ]);
+        }
         return redirect()->route('product.index');
     }
 
     public function destroy($id)
     {
+        $product = Product::find($id);
+        Storage::delete('public/product/'.$product->image);
+
         Product::where('id', $id)->delete();
         return redirect()->route('product.index');
     }

@@ -4,7 +4,9 @@
 <main>
     <div class="container-fluid px-4">
         <h1 class="my-4">Role</h1>
+        @if (Auth::user()->role->name == 'admin')
         <a href="{{route('role.create')}}" class="btn btn-primary mb-2">Create New</a>
+        @endif
         <div class="card mb-4">
             <div class="card-body">
                 <table id="datatablesSimple">
