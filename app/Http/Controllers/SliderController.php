@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class SliderController extends Controller
 {
@@ -21,6 +22,16 @@ class SliderController extends Controller
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(),[
+            'title' => 'required|string|min:4',
+            'caption' => 'required|string|min:4',
+            'image' => 'required|image|mimes:jpeg,png,jpg,jfif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+
         // ubah nama file gambar dengan angka random
         $imageName = time().'.'.$request->image->extension();
 
@@ -48,6 +59,17 @@ class SliderController extends Controller
 
     public function update(Request $request, $id)
     {
+
+        $validator = Validator::make($request->all(),[
+            'title' => 'required|string|min:4',
+            'caption' => 'required|string|min:4',
+            'image' => 'image|mimes:jpeg,png,jpg,jfif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+
         //cek upload gambar
         if ($request->hasFile('image')) {
             // ambil nama file gambar lama dari database

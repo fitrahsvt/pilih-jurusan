@@ -27,9 +27,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 //landing
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-//dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register', [RegisterController::class, 'store'])->name('register.store');
 
@@ -38,6 +35,9 @@ Route::post('/login', [LoginController::class, 'authenticate'])->name('authentic
 
 Route::middleware('auth')->group(function(){
     Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+    //dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     //ADMIN
     Route::middleware('role:admin')->group(function(){

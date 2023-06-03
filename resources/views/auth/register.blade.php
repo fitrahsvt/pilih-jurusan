@@ -38,20 +38,32 @@
             @csrf
             <h3 class="text-center mb-3">Register</h3>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name" placeholder="Ex: Fitrah Amaliah" name="name">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" value="{{old('name')}}" placeholder="Ex: Fitrah Amaliah" name="name">
                 <label for="name">Name</label>
+                @error('name')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="telp" placeholder="08xxxx" name="phone">
+                <input type="text" class="form-control @error('phone') is-invalid @enderror" id="telp" value="{{old('phone')}}" placeholder="08xxxx" name="phone">
                 <label for="telp">Telp</label>
+                @error('phone')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
             <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+                <input type="email" class="form-control @error('email') is-invalid @enderror" id="floatingInput" value="{{old('email')}}" placeholder="name@example.com" name="email">
                 <label for="floatingInput">Email address</label>
+                @error('email')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+                <input type="password" class="form-control @error('password') is-invalid @enderror" id="floatingPassword" value="{{old('password')}}" placeholder="Password" name="password">
                 <label for="floatingPassword">Password</label>
+                @error('password')
+                    <small class="text-danger">{{ $message }}</small>
+                @enderror
             </div>
             <div class="d-grid">
             <button type="submit" class="btn btn-primary">Sign up</button>

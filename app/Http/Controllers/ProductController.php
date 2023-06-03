@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -119,6 +120,20 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
+
+        $validator = Validator::make($request->all(),[
+            'category' => 'required',
+            'name' => 'required|string|min:3',
+            'price' => 'required|integer',
+            'sale_price' => 'required|integer',
+            'brand' => 'required|string',
+            'image' => 'required|image|mimes:jpeg,png,jpg,jfif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+
         if ($request->hasFile('image')) {
              // ubah nama file gambar dengan angka random
             $imageName = time().'.'.$request->image->extension();
@@ -161,6 +176,20 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+
+        $validator = Validator::make($request->all(),[
+            'category' => 'required',
+            'name' => 'required|string|min:3',
+            'price' => 'required|integer',
+            'sale_price' => 'required|integer',
+            'brand' => 'required|string',
+            'image' => 'image|mimes:jpeg,png,jpg,jfif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors())->withInput();
+        }
+
         if ($request->hasFile('image')) {
             // ambil nama file gambar lama dari database
             $gambar_lama = Product::find($id)->image;

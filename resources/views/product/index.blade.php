@@ -32,7 +32,7 @@ ini halaman product
                                 <td>{{$p->category->name}}</td>
                                 <td>{{$p->name}}</td>
                                 <td>Rp. {{number_format($p->price, 0, 2) }}</td>
-                                <td>{{number_format($p->sale_price, 0, 2) }}</td>
+                                <td>Rp. {{number_format($p->sale_price, 0, 2) }}</td>
                                 <td>
                                     @if ($p->image == null)
                                     <span class="badge bg-primary">No Image</span>
