@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Rules\MixedLetterNumber;
+
 
 class RegisterController extends Controller
 {
@@ -18,10 +20,9 @@ class RegisterController extends Controller
     {
 
         $validator = Validator::make($request->all(),[
-            'name' => 'required|string|min:3',
+            'name' => 'required|string|min:6',
             'email' => 'required|email|unique:users',
-            'phone' => 'required',
-            'password' => 'required|string|min:8',
+            'password' => ['required', 'string', 'min:8', new MixedLetterNumber],
         ]);
 
         if ($validator->fails()) {
@@ -31,9 +32,8 @@ class RegisterController extends Controller
         $store = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role_id' => 3,
-            'phone' => $request->phone,
             'password' => Hash::make($request->password),
+            'role_id' => 1,
         ]);
 
         if ($store) {

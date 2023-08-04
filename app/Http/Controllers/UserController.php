@@ -6,30 +6,28 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Rules\MixedLetterNumber;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('role')->get();
+        $users = User::all();
         return view('user.index', compact('users'));
     }
 
     public function create()
     {
-        $role = Role::all();
-        return view('user.create', compact('role'));
+        return view('user.create');
     }
 
     public function store(Request $request)
     {
 
         $validator = Validator::make($request->all(),[
-            'role' => 'required',
-            'name' => 'required|string|min:3',
+            'name' => 'required|string|min:6',
             'email' => 'required|email|unique:users',
-            'phone' => 'required',
-            'password' => 'required|string|min:8',
+            'password' => ['required', 'string', 'min:8', new MixedLetterNumber],
         ]);
 
         if ($validator->fails()) {
@@ -37,11 +35,10 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'role_id' => $request->role,
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
+            'role_id' => 1,
         ]);
         return redirect()->route('user.index');
     }
@@ -49,32 +46,27 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
-        $role = Role::all();
-        return view('user.edit', compact('user', 'role'));
+        return view('user.edit', compact('user'));
     }
 
     public function update(Request $request, $id)
     {
 
         $validator = Validator::make($request->all(),[
-            'role' => 'required',
-            'name' => 'required|string|min:3',
-            'email' => 'required|email|unique:users',
-            'phone' => 'required',
-            'password' => 'required|string|min:8',
+            'name' => 'required|string|min:6',
+            'email' => 'required|email',
+            'password' => ['required', 'string', 'min:8', new MixedLetterNumber],
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator->errors())->withInput();
         }
 
-
         User::where('id', $id)->update([
-            'role_id' => $request->role,
             'name' => $request->name,
             'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => $request->password,
+            'password' => bcrypt($request->password),
+            'role_id' => 1,
         ]);
         return redirect()->route('user.index');
     }

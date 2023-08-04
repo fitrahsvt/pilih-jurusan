@@ -1,56 +1,15 @@
 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
     <div class="sb-sidenav-menu">
         <div class="nav">
-            <div class="sb-sidenav-menu-heading">Core</div>
-
-            <a class="nav-link" href="{{route('dashboard')}}">
-                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                Dashboard
+            <a class="nav-link" href="{{route('food.index')}}">
+                <div class="sb-nav-link-icon"><i class='bx bxs-food-menu'></i></div>
+                Food
             </a>
 
-            @if (Auth::user()->role->name == 'admin' || Auth::user()->role->name == 'staff')
-            <div class="sb-sidenav-menu-heading">Interface</div>
-            <a class="nav-link" href="{{route('slider.index')}}">
-                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                slider
+            <a class="nav-link" href="{{route('user.index')}}">
+                <div class="sb-nav-link-icon"><i class='bx bxs-user' ></i></div>
+                User
             </a>
-            @endif
-
-            @if (Auth::user()->role->name == 'admin' || Auth::user()->role->name == 'staff')
-            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                Product
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-            </a>
-            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="{{route('product.index')}}">Products</a>
-                    <a class="nav-link" href="{{route('category.index')}}">Categories</a>
-                    <a class="nav-link" href="{{route('brand.index')}}">Brands</a>
-                </nav>
-            </div>
-            @endif
-
-            @if (Auth::user()->role->name == 'admin')
-                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                    <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                    User
-                    <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                </a>
-                <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                    <nav class="sb-sidenav-menu-nested nav">
-                        <a class="nav-link" href="{{route('role.index')}}">Role</a>
-                        <a class="nav-link" href="{{route('user.index')}}">Users</a>
-                    </nav>
-                </div>
-            @endif
-
-            @if (Auth::user()->role->name == 'user')
-            <a class="nav-link" href="{{route('product.index')}}">
-                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                Product
-            </a>
-            @endif
         </div>
     </div>
     <div class="sb-sidenav-footer">

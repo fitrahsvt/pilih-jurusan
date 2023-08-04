@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\ProductController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\FoodController;
+use App\Http\Controllers\API\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,11 +19,22 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-//product
-Route::prefix('product')->group(function() {
-    Route::get('', [ProductController::class, 'index']);
-    Route::get('/{id}', [ProductController::class, 'show']);
-    Route::post('', [ProductController::class, 'store']);
-    Route::put('/{id}', [ProductController::class, 'update']);
-    Route::delete('/{id}', [ProductController::class, 'destroy']);
+//info
+Route::get('/', [UserController::class, 'info']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    //logout
+    Route::get('logout', [UserController::class, 'logout']);
+    //Foods
+    Route::prefix('foods')->group(function() {
+        Route::get('', [FoodController::class, 'index']);
+        Route::get('/{id}', [FoodController::class, 'show']);
+        Route::post('', [FoodController::class, 'store']);
+        Route::put('/{id}', [FoodController::class, 'update']);
+        Route::delete('/{id}', [FoodController::class, 'destroy']);
+    });
 });
+
+
+//authenticate
+Route::post('users/autenticate', [UserController::class, 'login']);

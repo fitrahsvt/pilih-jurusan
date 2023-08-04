@@ -45,13 +45,6 @@
                 @enderror
             </div>
             <div class="form-floating mb-3">
-                <input type="text" class="form-control @error('phone') is-invalid @enderror" id="telp" value="{{old('phone')}}" placeholder="08xxxx" name="phone">
-                <label for="telp">Telp</label>
-                @error('phone')
-                    <small class="text-danger">{{ $message }}</small>
-                @enderror
-            </div>
-            <div class="form-floating mb-3">
                 <input type="email" class="form-control @error('email') is-invalid @enderror" id="floatingInput" value="{{old('email')}}" placeholder="name@example.com" name="email">
                 <label for="floatingInput">Email address</label>
                 @error('email')

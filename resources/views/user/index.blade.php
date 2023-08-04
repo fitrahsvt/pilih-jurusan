@@ -11,23 +11,17 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Avatar</th>
-                            <th>Nama</th>
+                            <th>Name</th>
                             <th>Email</th>
-                            <th>Phone</th>
-                            <th>Role</th>
-                            <th>Aksi</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($users as $u)
                         <tr>
                             <th>{{$loop->iteration}}</th>
-                            <td><img src="https://placehold.co/50x50" alt="avatar"></td>
                             <td>{{$u->name}}</td>
                             <td>{{$u->email}}</td>
-                            <td>{{$u->phone}}</td>
-                            <td>{{$u->role->name}}</td>
                             <td>
                                 <form action="{{route('user.destroy', $u->id)}}" method="POST" onsubmit="return confirm('Anda yakin menghapus ini?');">
                                     <a type="button" class="btn btn-warning" href="{{route('user.edit', $u->id)}}">Edit</a>
